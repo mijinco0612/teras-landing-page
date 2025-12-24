@@ -27,7 +27,7 @@ export function Hero() {
     }
 
     const particles: Particle[] = []
-    const particleCount = 70
+    const particleCount = 100 // Reduced particle count from 120 to 100
     const numBands = 3
     const centerX = canvas.width / 2
     const centerY = canvas.height / 2
