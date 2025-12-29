@@ -18,7 +18,7 @@ export function Footer() {
                 <h4 className="text-xs font-medium tracking-widest text-background/40 uppercase">Contact</h4>
                 <div className="space-y-2 text-sm font-light text-background/80">
                   <p>Email: contact@teras.llc</p>
-                  <p>Location: Tokyo, Japan</p>
+                  <p>Location: 7F, Ichigo Tenjin North Bldg., 4-6-28 Tenjin, Chuo-ku, Fukuoka-shi, Fukuoka, Japan</p>
                 </div>
               </div>
 
