@@ -7,7 +7,10 @@ export function Footer() {
             {/* Left column */}
             <div className="space-y-8">
               <div className="space-y-4">
-                <img src="/teras-logo.svg" alt="TERAS" className="h-8 md:h-10 invert" />
+                <div className="flex items-center gap-3">
+                  <img src="/teras-mark.png" alt="" className="h-14 md:h-16" />
+                  <img src="/teras-logo.svg" alt="TERAS" className="h-8 md:h-10 invert" />
+                </div>
                 <p className="text-sm font-light text-background/60 italic">Traces of the Future.</p>
               </div>
             </div>
