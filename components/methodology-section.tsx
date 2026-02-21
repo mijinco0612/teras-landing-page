@@ -30,13 +30,13 @@ export function MethodologySection() {
   ]
 
   return (
-    <section id="methodology" className="py-24 md:py-32 lg:py-40 bg-background border-t border-foreground/5">
+    <section id="methodology" className="py-24 md:py-32 lg:py-40 border-t border-foreground/5">
       <div className="container mx-auto px-6 lg:px-12">
         <div className="max-w-6xl mx-auto">
           {/* Section title */}
           <div className="mb-16 md:mb-24">
-            <h2 className="text-xs font-medium tracking-widest text-foreground/40 uppercase mb-4">Methodology</h2>
-            <div className="w-16 h-px bg-foreground/20" />
+            <h2 className="text-lg md:text-xl font-semibold tracking-widest text-foreground uppercase mb-4">Methodology</h2>
+            <div className="w-full h-[0.5px] bg-foreground" />
           </div>
 
           {/* Minimalist grid */}
@@ -58,23 +58,23 @@ export function MethodologySection() {
 
                 <div className="relative space-y-6">
                   {/* Number */}
-                  <div className="text-5xl font-light text-foreground/10 group-hover:text-foreground/20 transition-colors">
+                  <div className="text-5xl font-light text-foreground group-hover:text-foreground transition-colors">
                     {String(index + 1).padStart(2, "0")}
                   </div>
 
                   {/* Title and subtitle */}
                   <div className="space-y-2">
                     <h3 className="text-lg md:text-xl font-medium text-foreground">{method.title}</h3>
-                    <p className="text-xs font-light text-foreground/40 italic">{method.subtitle}</p>
+                    <p className="text-xs font-light text-foreground italic">{method.subtitle}</p>
                   </div>
 
                   {/* Description in Japanese */}
-                  <p className="text-xs md:text-sm font-light text-foreground/60 leading-relaxed">
+                  <p className="text-xs md:text-sm font-light text-foreground leading-relaxed">
                     {method.description}
                   </p>
 
                   {/* Details in English */}
-                  <p className="text-xs font-light text-foreground/40 leading-relaxed pt-4">{method.details}</p>
+                  <p className="text-xs font-light text-foreground leading-relaxed pt-4">{method.details}</p>
                 </div>
               </div>
             ))}

@@ -24,13 +24,13 @@ export function ServicesSection() {
   ]
 
   return (
-    <section id="services" className="py-24 md:py-32 lg:py-40 bg-background">
+    <section id="services" className="py-24 md:py-32 lg:py-40">
       <div className="container mx-auto px-6 lg:px-12">
         <div className="max-w-5xl mx-auto">
           {/* Section title */}
           <div className="mb-16 md:mb-24">
-            <h2 className="text-xs font-medium tracking-widest text-foreground/40 uppercase mb-4">Services</h2>
-            <div className="w-16 h-px bg-foreground/20" />
+            <h2 className="text-lg md:text-xl font-semibold tracking-widest text-foreground uppercase mb-4">Services</h2>
+            <div className="w-full h-[0.5px] bg-foreground" />
           </div>
 
           {/* Large typography list */}
@@ -40,7 +40,7 @@ export function ServicesSection() {
                 <div className="grid md:grid-cols-12 gap-8 md:gap-12">
                   {/* Number */}
                   <div className="md:col-span-2">
-                    <span className="text-6xl md:text-7xl font-light text-foreground/10 group-hover:text-foreground/20 transition-colors">
+                    <span className="text-6xl md:text-7xl font-light text-foreground group-hover:text-foreground transition-colors">
                       {service.number}
                     </span>
                   </div>
@@ -51,10 +51,10 @@ export function ServicesSection() {
                       <h3 className="text-3xl md:text-4xl lg:text-5xl font-light text-foreground leading-tight">
                         {service.title}
                       </h3>
-                      <p className="text-base md:text-lg font-light text-foreground/50">{service.titleJa}</p>
+                      <p className="text-base md:text-lg font-light text-foreground">{service.titleJa}</p>
                     </div>
 
-                    <p className="text-sm md:text-base font-light text-foreground/60 leading-relaxed max-w-2xl">
+                    <p className="text-sm md:text-base font-light text-foreground leading-relaxed max-w-2xl">
                       {service.description}
                     </p>
                   </div>

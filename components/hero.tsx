@@ -24,21 +24,28 @@ export function Hero() {
       bandIndex: number
       position: number
       speed: number
+      radiusOffset: number
+      phaseOffset: number
+      weaveFreq: number
+      drift: number
+      hue: number
     }
 
     const particles: Particle[] = []
-    const particleCount = 100 // Reduced particle count from 120 to 100
+    const particleCount = 250
     const numBands = 3
-    const centerX = canvas.width / 2
-    const centerY = canvas.height / 2
-    const baseRadius = Math.min(canvas.width, canvas.height) * 0.35
 
-    // Initialize particles distributed across the three bands
+    // Initialize particles with random offsets for organic motion
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         bandIndex: i % numBands,
         position: (i / particleCount) * Math.PI * 2,
-        speed: 0.002 + Math.random() * 0.003,
+        speed: 0.00005 + Math.pow(Math.random(), 3) * 0.012,
+        radiusOffset: (Math.random() - 0.5) * 0.5,
+        phaseOffset: Math.random() * Math.PI * 2,
+        weaveFreq: 1.5 + Math.random() * 4,
+        drift: (Math.random() - 0.5) * 0.001,
+        hue: Math.random() * 360,
       })
     }
 
@@ -46,40 +53,48 @@ export function Hero() {
     let animationFrame: number
 
     // Function to calculate position on intertwined band
-    const getBandPosition = (bandIndex: number, position: number, time: number) => {
-      const phaseOffset = (bandIndex / numBands) * Math.PI * 2
-      const weaveOffset = Math.sin(position * 3 + phaseOffset) * baseRadius * 0.15
+    const getBandPosition = (particle: Particle, time: number) => {
+      const cx = canvas.width / 2
+      const isMobile = canvas.width < 768
+      const cy = isMobile ? canvas.height * 0.35 : canvas.height / 2
+      const r = Math.min(canvas.width, canvas.height) * 0.45
 
-      const angle = position + time * 0.5
-      const radius = baseRadius + weaveOffset
+      const bandPhase = (particle.bandIndex / numBands) * Math.PI * 2
+      const weaveOffset = Math.sin(particle.position * particle.weaveFreq + bandPhase + particle.phaseOffset) * r * 0.25
 
-      const weaveFactor = Math.sin(angle * 3 + phaseOffset) * baseRadius * 0.12
+      const angle = particle.position + time * 0.5
+      const radius = r * (1 + particle.radiusOffset) + weaveOffset
 
-      const x = centerX + Math.cos(angle) * radius + Math.cos(angle + Math.PI / 2) * weaveFactor
-      const y = centerY + Math.sin(angle) * radius + Math.sin(angle + Math.PI / 2) * weaveFactor
+      const weaveFactor = Math.sin(angle * particle.weaveFreq + particle.phaseOffset) * r * 0.2
+      const noise1 = Math.sin(time * 2.3 + particle.phaseOffset) * r * 0.08
+      const noise2 = Math.cos(time * 1.7 + particle.phaseOffset * 1.3) * r * 0.06
+
+      const x = cx + Math.cos(angle) * radius + Math.cos(angle + Math.PI / 2) * weaveFactor + noise1
+      const y = cy + Math.sin(angle) * radius + Math.sin(angle + Math.PI / 2) * weaveFactor + noise2
 
       return { x, y }
     }
 
     const animate = () => {
       // Clear canvas with subtle fade
-      ctx.fillStyle = "rgba(255, 255, 255, 0.1)"
+      ctx.fillStyle = "rgba(255, 255, 255, 0.05)"
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
       time += 0.01
 
-      const currentCenterX = canvas.width / 2
-      const currentCenterY = canvas.height / 2
+      const isMobile = canvas.width < 768
+      const particleOpacity = isMobile ? 0.15 : 0.4
+      const lineOpacity = isMobile ? 0.03 : 0.08
 
       particles.forEach((particle) => {
-        particle.position += particle.speed
+        particle.position += particle.speed + particle.drift * Math.sin(time + particle.phaseOffset)
 
-        const pos = getBandPosition(particle.bandIndex, particle.position, time)
+        const pos = getBandPosition(particle, time)
 
-        const opacity = 0.12 + (particle.bandIndex / numBands) * 0.08
+        const hue = (particle.hue + time * 20) % 360
         ctx.beginPath()
-        ctx.arc(pos.x, pos.y, 1.5, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(0, 0, 0, ${opacity})`
+        ctx.arc(pos.x, pos.y, 2, 0, Math.PI * 2)
+        ctx.fillStyle = `hsla(${hue}, 80%, 55%, ${particleOpacity})`
         ctx.fill()
       })
 
@@ -91,13 +106,15 @@ export function Hero() {
           const p1 = bandParticles[i]
           const p2 = bandParticles[i + 1]
 
-          const pos1 = getBandPosition(p1.bandIndex, p1.position, time)
-          const pos2 = getBandPosition(p2.bandIndex, p2.position, time)
+          const pos1 = getBandPosition(p1, time)
+          const pos2 = getBandPosition(p2, time)
 
           const distance = Math.sqrt(Math.pow(pos2.x - pos1.x, 2) + Math.pow(pos2.y - pos1.y, 2))
 
+          const baseRadius = Math.min(canvas.width, canvas.height) * 0.45
           if (distance < baseRadius * 0.5) {
-            ctx.strokeStyle = `rgba(0, 0, 0, ${0.05 + (bandIndex / numBands) * 0.03})`
+            const lineHue = (p1.hue + time * 20) % 360
+            ctx.strokeStyle = `hsla(${lineHue}, 70%, 60%, ${lineOpacity})`
             ctx.lineWidth = 0.5
             ctx.beginPath()
             ctx.moveTo(pos1.x, pos1.y)
@@ -128,13 +145,13 @@ export function Hero() {
         <div className="max-w-4xl mx-auto text-center space-y-12">
           {/* Logo placement */}
           <div className="space-y-8">
-            <div className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground">TERAS</div>
+            <img src="/teras-logo.svg" alt="TERAS" className="h-10 md:h-14 lg:h-16 mx-auto" />
 
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-light text-foreground/90 leading-relaxed text-balance">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-relaxed text-balance">
               複雑さに秩序をもたらす力
             </h1>
 
-            <p className="text-sm md:text-base lg:text-lg font-light text-foreground/60 leading-relaxed max-w-3xl mx-auto text-balance">
+            <p className="text-sm md:text-base lg:text-lg font-light text-foreground leading-relaxed max-w-3xl mx-auto text-balance">
               混沌とした複雑性を、明確な構造へと変える。
               <br />
               開発を通じて、システムと組織に秩序と美しさをもたらす。
@@ -142,10 +159,10 @@ export function Hero() {
           </div>
 
           <div className="pt-12 space-y-4">
-            <p className="text-base md:text-lg font-light text-foreground/50 italic">
+            <p className="text-base md:text-lg font-light text-foreground italic">
               The power to tame complexity and create structure.
             </p>
-            <p className="text-xs md:text-sm font-light text-foreground/40 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xs md:text-sm font-light text-foreground max-w-2xl mx-auto leading-relaxed">
               We transform chaotic complexity into clear structure. Through development, we bring order and beauty to
               your systems.
             </p>
