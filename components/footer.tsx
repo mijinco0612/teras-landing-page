@@ -7,7 +7,7 @@ export function Footer() {
             {/* Left column */}
             <div className="space-y-8">
               <div className="space-y-4">
-                <div className="text-2xl md:text-3xl font-bold tracking-tight">TERAS</div>
+                <img src="/teras-logo.svg" alt="TERAS" className="h-8 md:h-10 invert" />
                 <p className="text-sm font-light text-background/60 italic">Traces of the Future.</p>
               </div>
             </div>
@@ -26,7 +26,7 @@ export function Footer() {
               <div className="space-y-4">
                 <h4 className="text-xs font-medium tracking-widest text-background/40 uppercase">Expertise</h4>
                 <div className="flex flex-wrap gap-2 text-xs font-light">
-                  {["DDD", "Microservices", "Team Topologies", "Inverse Conway", "Event Sourcing", "CQRS"].map(
+                  {["DDD", "Microservices", "Team Topologies", "Inverse Conway", "Event Sourcing", "CQRS", "Design Thinking"].map(
                     (tag) => (
                       <span key={tag} className="px-3 py-1 border border-background/20 text-background/70">
                         {tag}
